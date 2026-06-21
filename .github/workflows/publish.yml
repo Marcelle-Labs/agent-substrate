@@ -1,0 +1,52 @@
+name: publish
+
+# Publish @marcelle-labs/agent-substrate to npm using OIDC trusted publishing.
+# No long-lived npm tokens are stored anywhere: npm mints a short-lived,
+# workflow-scoped credential from the GitHub OIDC id-token at publish time, and
+# --provenance attaches a signed provenance attestation to the release.
+#
+# One-time setup on npmjs.com (not in this repo): configure this repo +
+# workflow as a "Trusted Publisher" for the package.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # required: lets npm exchange the GitHub OIDC token for publish auth + provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm-publish
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
+
+      # OIDC trusted publishing + provenance requires a recent npm.
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build
+
+      # No NODE_AUTH_TOKEN / NPM_TOKEN: auth comes from the OIDC id-token.
+      - name: Publish with provenance
+        run: npm publish --provenance --access public

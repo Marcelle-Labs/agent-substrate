@@ -5,6 +5,10 @@
   "license": "UNLICENSED",
   "private": false,
   "type": "commonjs",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Marcelle-Labs/agent-substrate.git"
