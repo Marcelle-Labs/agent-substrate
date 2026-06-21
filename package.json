@@ -22,7 +22,6 @@
     "templates/",
     "routing/",
     "skills/",
-    ".claude/",
     "AGENTS.md",
     "CLAUDE.md"
   ],
