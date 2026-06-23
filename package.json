@@ -14,8 +14,8 @@
     "url": "git+https://github.com/Marcelle-Labs/agent-substrate.git"
   },
   "bin": {
-    "agent-substrate": "./dist/bin/agent-substrate.js",
-    "agent-substrate-sync": "./dist/bin/agent-substrate-sync.js"
+    "agent-substrate": "dist/bin/agent-substrate.js",
+    "agent-substrate-sync": "dist/bin/agent-substrate-sync.js"
   },
   "files": [
     "dist/",
